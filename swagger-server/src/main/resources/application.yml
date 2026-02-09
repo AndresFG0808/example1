@@ -12,6 +12,10 @@ app:
       - name: "MSV Usuario"
         url: "http://localhost:8081"
         description: "Microsservicio de Usuarios"
+
+      - name: "API Gateway"
+        url: "http://localhost:8090"
+        description: "Gateway de entrada"
       
       - name: "Authorization Server"
         url: "http://localhost:9000"
@@ -24,6 +28,8 @@ springdoc:
     urls:
       - name: "MSV Usuario"
         url: "http://localhost:8081/v3/api-docs"
+      - name: "API Gateway"
+        url: "http://localhost:8090/v3/api-docs"
       - name: "Authorization Server"
         url: "http://localhost:9000/v3/api-docs"
     # Mostrar el selector de especificaciones

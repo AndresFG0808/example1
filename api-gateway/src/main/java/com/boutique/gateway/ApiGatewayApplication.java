@@ -1,4 +1,4 @@
-package com.marco.gateway;
+package com.boutique.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

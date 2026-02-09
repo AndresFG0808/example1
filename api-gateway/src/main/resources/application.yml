@@ -13,29 +13,23 @@ spring:
       enabled: true
 
     gateway:
-     server:
-      webflux:
-       routes:
-        - id: msv-clientes
-          uri: lb://msv-clientes
-          predicates:
-            - Path=/api/clientes/**
-          filters:
-            - StripPrefix=2
-
-        - id: msv-productos
-          uri: lb://msv-productos
-          predicates:
-            - Path=/api/productos/**
-          filters:
-            - StripPrefix=2
-
-        - id: msv-pedidos
-          uri: lb://msv-pedidos
-          predicates:
-            - Path=/api/pedidos/**
-          filters:
-            - StripPrefix=2
+      server:
+        webflux:
+          routes:
+            - id: msv-usuario
+              uri: lb://msv-usuario
+              predicates:
+                - Path=/api/usuarios/**
+              filters:
+                - StripPrefix=1
+            
+            # Rutas para documentación OpenAPI de cada microservicio
+            - id: msv-usuario-api-docs
+              uri: lb://msv-usuario
+              predicates:
+                - Path=/v3/api-docs/usuarios
+              filters:
+                - RewritePath=/v3/api-docs/usuarios, /v3/api-docs
 
 server:
   port: 8090
@@ -44,3 +38,26 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    register-with-eureka: false
+    fetch-registry: true
+
+# Configuración de Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+  endpoint:
+    gateway:
+      access: unrestricted
+
+# Configuración de Springdoc OpenAPI
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  # Configuración para Spring Cloud Gateway
+  enable-spring-cloud-gateway: true
+  show-actuator: false

@@ -1,4 +1,4 @@
-package com.marco.gateway.security;
+package com.boutique.gateway.security;
 
 import java.util.List;
 
@@ -22,13 +22,15 @@ public class SecurityConfig {
     	http.csrf(csrf -> csrf.disable())
     			.cors(cors -> cors.configurationSource(request -> {
     				CorsConfiguration config = new CorsConfiguration();
-    				config.setAllowedOrigins(List.of("http://localhost:4200"));
+				config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8080", "http://localhost:8090"));
     				config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-    				config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    				config.setAllowedHeaders(List.of("*"));
+    				config.setExposedHeaders(List.of("*"));
     				config.setAllowCredentials(true);
     				return config;
-    			})).authorizeExchange(ex -> ex
-    		            .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				})).authorizeExchange(ex -> ex
+			            .pathMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+			            .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
     		            .pathMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "USER")//
     		            .pathMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "USER")//permitAll()//
     		            .pathMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")//permitAll() //
